@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Flasky{% endblock %}
+
+
+{% block page_content %}
+
+    {% for message in get_flashed_messages() %}
+
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+
+    {% endfor %}
+
+    <div class="page-header">
+        <h1>Lista społeczności szkolnej</h1>
+    </div>
+
+    {% for osoba in the_uzytkownicy %}
+        <h3> {{osoba.id}}, {{osoba.firstname}}, {{osoba.lastname}}, {{osoba.role}}</h3>
+    {% endfor %}
+    
+</div>
+{% endblock %}
