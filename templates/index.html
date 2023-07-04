@@ -6,6 +6,8 @@
 <div class="page-header">
     <h1>Witaj!</h1>
 </div>
+<p>Lokalna data i czas: {{ moment(the_current_time).format('LLL') }}.</p>
+<p>To było: {{ moment(the_current_time).fromNow(refresh=True) }}.</p>
 {% endblock %}
 
 
