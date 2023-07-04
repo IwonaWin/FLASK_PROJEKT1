@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from datetime import datetime
 from flask_moment import Moment
@@ -17,12 +17,14 @@ class NameForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    name = None
     form = NameForm()
     if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
-    return render_template('index.html',the_current_time=datetime.utcnow(), the_form=form,the_name=name)
+        old_name = session.get('name')
+        if old_name is not None and old_name != form.name.data:
+            flash('Wygląda na to, że teraz nazywasz się inaczej!')
+        session['name'] = form.name.data
+        return redirect(url_for('index'))
+    return render_template('index.html',the_current_time=datetime.utcnow(), the_form=form,the_name=session.get('name'))
 
 @app.route('/kontakt')
 def kontakt():
