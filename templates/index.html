@@ -1,11 +1,14 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %} Flasky {% endblock %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Witaj!</h1>
+    <h1>Witaj, {% if the_name == "Iwonka" %}{{ the_name }}{% else %}nieznajomy{% endif %}!</h1>
 </div>
+{{ wtf.quick_form(the_form) }}
+<br>
 <p>Lokalna data i czas: {{ moment(the_current_time).format('LLL') }}.</p>
 <p>To było: {{ moment(the_current_time).fromNow(refresh=True) }}.</p>
 {% endblock %}
