@@ -32,12 +32,20 @@ class User(db.Model): #Class which represents all people in school
 def index():
     form = NameForm()
     if form.validate_on_submit():
+        user = User.query.filter_by(firstname=form.name.data).first()
         old_name = session.get('name')
         if old_name is not None and old_name != form.name.data:
             flash('Wygląda na to, że teraz nazywasz się inaczej!')
+        if user is None:
+            user = User(firstname=form.name.data)
+            db.session.add(user)
+            db.session.commit()
+            session['known'] = False
+        else:
+            session['known'] = True    
         session['name'] = form.name.data
         return redirect(url_for('index'))
-    return render_template('index.html',the_current_time=datetime.utcnow(), the_form=form,the_name=session.get('name'))
+    return render_template('index.html',the_current_time=datetime.utcnow(), the_form=form,the_name=session.get('name'), the_known=session.get('known', False))
 
 @app.route('/kontakt')
 def kontakt():
@@ -61,6 +69,7 @@ def page_not_found(e):
 @app.errorhandler(500)
 def page_not_found(e):
     return render_template('404.html'), 500
+
 
 if __name__ == "__main__":
     app.run()

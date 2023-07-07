@@ -6,6 +6,11 @@
 {% block page_content %}
 <div class="page-header">
     <h1>Witaj, {% if the_name == "Iwonka" %}{{ the_name }}{% else %}nieznajomy{% endif %}!</h1>
+    {% if not the_known %}
+    <p>Miło Cię poznać!</p>
+    {% else %}
+    <p>Witaj ponownie!</p>
+    {% endif %}
 </div>
 {{ wtf.quick_form(the_form) }}
 <br>
